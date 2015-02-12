@@ -1,11 +1,11 @@
 {
   "request": {
     "method": "Get",
-    "urlPattern": "/test"
+    "urlPattern": "hello"
   },
   "response": {
     "status": 200,
-    "body": "{\"date\":\"${\"2015-01-14\":$anyInt($it)}\"}}",
+    "body": "hello world",
     "headers": {
       "Content-Type": "text/plain"
     }
