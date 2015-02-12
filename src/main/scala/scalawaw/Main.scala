@@ -1,3 +1,4 @@
+package scalawaw
 /**
  * Created by bka on 12.02.15.
  */

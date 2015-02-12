@@ -1,7 +1,7 @@
 {
   "request": {
-    "method": "GET",
-    "urlPattern": "${/[0-9]{2}:/12}"
+    "method": "Get",
+    "urlPattern": "/test"
   },
   "response": {
     "status": 200,
