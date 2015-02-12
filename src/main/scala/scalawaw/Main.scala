@@ -1,6 +1,8 @@
 /**
  * Created by bka on 12.02.15.
  */
+package scalawaw
+
 import spray.json._
 import DefaultJsonProtocol._
 
@@ -11,7 +13,6 @@ case class Response(status: Int)
 case class Spec(request: Request, response: Response)
 
 object SpecJsonProtocol extends DefaultJsonProtocol {
-
   implicit val requestFormat = jsonFormat2(Request.apply)
   implicit val responseFormat = jsonFormat1(Response.apply)
   implicit val specFormat = jsonFormat2(Spec.apply)
@@ -22,5 +23,6 @@ object MainApp extends App {
   val jsonStr = Source.fromFile("./src/main/resources/spec.json").mkString
   val json = jsonStr.parseJson
   val spec = json.convertTo[Spec]
-  println(spec.response.status)
+  new ServiceRenderer(spec).render
 }
+
