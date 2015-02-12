@@ -12,10 +12,10 @@ class ServiceRenderer(spec: Spec) {
 
   def getRoute = {
     val Spec(request, response) = spec
-    "path(\"\") " + braces(
+    "path(\"" + request.urlPattern + "\") " + braces(
       request.method.toLowerCase() + braces(
       "respondWithMediaType(`text/html`)" + braces(
-      "complete" + braces("\"a\"")
+      "complete" + braces("\"" + response.body + "\"")
         )
       )
     )
