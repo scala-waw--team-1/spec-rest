@@ -37,13 +37,15 @@ class ClientGenerator(request: Request) {
 
   private def startMain() : Unit = {
     sb.append(
-      """object Client extends App {
+      """object Client {
       """.stripMargin)
   }
+ println("Got response")
 
 
   private def insertActorSystem(): Unit = {
-    sb.append("""|implicit val system = ActorSystem()
+    sb.append("""|def run {
+                |implicit val system = ActorSystem()
                 |import system.dispatcher
                 |""")
   }
@@ -59,46 +61,33 @@ class ClientGenerator(request: Request) {
 
   private def addResponseCode() : Unit = {
 
-    sb.append(s"""val response: Future[Response] = pipeline(${request.method}("http://localhost:8080${request.urlPattern}"))
-                |""")
+    sb.append(s"""val response: Future[Response] = pipeline(${request.method}("http://localhost:8080/${request.urlPattern}"))
+                | println("Got response")
+              """)
   }
 
   private def close() : Unit = {
     sb.append(
       """
         |}
+        |}
       """.stripMargin)
   }
 
-  private def render : String = {
+   def render : Unit = {
     insertImports();
     startMain()
     insertActorSystem();
     buildPipeline();
     addResponseCode()
     close()
-    return sb.stripMargin
+    val content : String =  sb.stripMargin
+    val outFile: File = new File("./src/main/scala/scalawaw/Client.scala")
+      outFile.delete()
+    val pw : PrintWriter = new PrintWriter(outFile)
+    pw.write(content)
+    pw.close()
   }
-
-
 }
 
 
-
-object ClientGenerator extends App {
-  println("Generating client source:")
-  import SpecJsonProtocol._
-  val jsonStr = Source.fromFile("./src/main/resources/spec.json").mkString
-  val json = jsonStr.parseJson
-  val spec = json.convertTo[Spec]
-  println(spec.response.status)
-  val cg = new ClientGenerator(spec.request)
-  val outFile: File = new File("./src/main/scala/scalawaw/Client.scala")
-  if(outFile.exists())
-    outFile.delete()
-  outFile.getParentFile.mkdir()
-  val pw : PrintWriter = new PrintWriter(outFile)
-  pw.write(cg.render)
-  pw.close()
-
-}

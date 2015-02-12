@@ -2,7 +2,6 @@ package scalawaw
 /**
  * Created by bka on 12.02.15.
  */
-package scalawaw
 
 import spray.json._
 import DefaultJsonProtocol._
@@ -30,10 +29,12 @@ object MainApp extends App {
   def render = {
     val spec = getSpec
     new ServiceRenderer(spec).render
+    new ClientGenerator(spec.request).render
   }
 
   def runService = {
     Boot.run
+    Client.run
   }
 
   args(0) match {
