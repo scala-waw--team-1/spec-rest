@@ -12,11 +12,9 @@ object Client {
 def run {
 implicit val system = ActorSystem()
 import system.dispatcher
-val pipeline: HttpRequest => Future[Response] = (
- sendReceive
-  ~> unmarshal[Response]
-)
-val response: Future[Response] = pipeline(Get("http://localhost:8080/hello"))
+val pipeline: HttpRequest => Future[HttpResponse] = sendReceive
+
+      val response: Future[HttpResponse] = pipeline(Get("http://localhost:8080/hello"))
  response.onComplete { 
    case Success(x) =>
      println(x)

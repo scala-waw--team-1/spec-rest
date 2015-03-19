@@ -51,16 +51,15 @@ class ClientGenerator(request: Request) {
 
 
   private def buildPipeline() : Unit = {
-    sb.append("""val pipeline: HttpRequest => Future[Response] = (
-                | sendReceive
-                |  ~> unmarshal[Response]
-                |)
-                |""")
+    sb.append(
+      """val pipeline: HttpRequest => Future[HttpResponse] = sendReceive
+        |
+      """.stripMargin)
   }
 
   private def addResponseCode() : Unit = {
 
-    sb.append(s"""val response: Future[Response] = pipeline(${request.method}("http://localhost:8080/${request.urlPattern}"))
+    sb.append(s"""val response: Future[HttpResponse] = pipeline(${request.method}("http://localhost:8080/${request.urlPattern}"))
                 | response.onComplete { 
                 |   case Success(x) =>
                 |     println(x)

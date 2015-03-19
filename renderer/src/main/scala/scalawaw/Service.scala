@@ -23,5 +23,5 @@ class MyServiceActor extends Actor with MyService {
 // this trait defines our service behavior independently from the service actor
 trait MyService extends HttpService {
 
-  val myRoute = path("hello")  { get { respondWithMediaType(`application/text`) { complete { "hello world" }  }  }  } 
+  val myRoute = path("hello")  { get { respondWithMediaType(`text/plain`) { complete { "hello world" }  }  }  }
 }
