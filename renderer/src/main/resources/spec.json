@@ -1,13 +1,16 @@
 {
   "request": {
     "method": "Get",
-    "urlPattern": "hello"
+    "urlPattern": "hello/$number"
   },
   "response": {
-    "status": 200,
-    "body": "hello world",
+    "status": 201,
+    "body": "hello world$number",
     "headers": {
       "Content-Type": "text/plain"
+    },
+    "variables" : {
+      "number" : "long"
     }
   }
 }
