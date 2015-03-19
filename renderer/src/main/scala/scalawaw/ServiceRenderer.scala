@@ -15,6 +15,8 @@ object ServiceRenderer {
   case class Route(path: Path, method: HttpMethod, body: Body)
 
   def braces(str: String) = " { " + str + " } "
+  def abbrev(str: String) = "\"" + str + "\""
+  def paren(str: String) = "(" + str + ")"
 
   def getRoute(spec: Spec): Route = {
     val Spec(request, response) = spec
@@ -25,10 +27,10 @@ object ServiceRenderer {
   }
 
   def renderRoute(route: Route): String = {
-    "path(\"" + route.path.url + "\") " + braces(
+    "path" + paren(abbrev(route.path.url)) + " " + braces(
       route.method.toString.toLowerCase() + braces(
       "respondWithMediaType(`text/html`)" + braces(
-      "complete" + braces("\"" + route.body.text + "\"")
+      "complete" + braces(abbrev(route.body.text))
         )
       )
     )
