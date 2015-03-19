@@ -18,7 +18,7 @@ object SpecJsonProtocol extends DefaultJsonProtocol {
   implicit val specFormat = jsonFormat2(Spec.apply)
 }
 
-object MainApp extends App {
+object MainApp {
   import SpecJsonProtocol._
   def getSpec = {
     val jsonStr = Source.fromFile("./src/main/resources/spec.json").mkString
@@ -28,7 +28,7 @@ object MainApp extends App {
 
   def render = {
     val spec = getSpec
-    new ServiceRenderer(spec).render
+    ServiceRenderer.render(spec)
     new ClientGenerator(spec.request).render
   }
 
@@ -37,9 +37,12 @@ object MainApp extends App {
     Client.run
   }
 
-  args(0) match {
-    case "render" => render
-    case "service" => runService
+  def main(args: Array[String]) {
+    args(0) match {
+      case "render" => render
+      case "service" => runService
+    }
   }
+
 }
 
