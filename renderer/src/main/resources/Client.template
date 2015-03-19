@@ -15,10 +15,10 @@ object Client {
     import system.dispatcher
     val pipeline: HttpRequest => Future[HttpResponse] = sendReceive
 
-    val response: Future[HttpResponse] = pipeline(Get("http://localhost:8080/hello"))
+    val response: Future[HttpResponse] = pipeline(Get("http://localhost:8080/URL"))
     response.onComplete {
       case Success(x) =>
-        require(x.status.intValue.toString == "200",s"""${x.status.intValue.toString} != "200""")
+        require(x.status.intValue.toString == "STATUS_CODE",s"""${x.status.intValue.toString} != "STATUS_CODE""")
       case Failure(y) =>
         println(y)
     }

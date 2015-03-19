@@ -29,7 +29,7 @@ object MainApp {
   def render = {
     val spec = getSpec
     ServiceRenderer.render(spec)
-    new ClientGenerator(spec.request).render
+    new ClientGenerator(spec.request,spec.response).render
   }
 
   // def runService = {
