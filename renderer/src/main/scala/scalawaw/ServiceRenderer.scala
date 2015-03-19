@@ -27,10 +27,11 @@ object ServiceRenderer {
   }
 
   def renderRoute(route: Route): String = {
-    "path" + paren(abbrev(route.path.url)) + " " + braces(
+    "path" + paren(abbrev(route.path.url)) + braces(
       route.method.toString.toLowerCase() + braces(
       "respondWithMediaType(`text/html`)" + braces(
-      "complete" + braces(abbrev(route.body.text))
+      "complete" + braces(
+        abbrev(route.body.text))
         )
       )
     )
