@@ -32,6 +32,7 @@ class ClientGenerator(request: Request) {
                 |import spray.client.pipelining._
                 |import scala.concurrent.Future
                 |import SpecJsonProtocol._
+                |import scala.util.{Success,Failure}
                 |""")
   }
 
@@ -40,8 +41,6 @@ class ClientGenerator(request: Request) {
       """object Client {
       """.stripMargin)
   }
- println("Got response")
-
 
   private def insertActorSystem(): Unit = {
     sb.append("""|def run {
@@ -62,7 +61,12 @@ class ClientGenerator(request: Request) {
   private def addResponseCode() : Unit = {
 
     sb.append(s"""val response: Future[Response] = pipeline(${request.method}("http://localhost:8080/${request.urlPattern}"))
-                | println("Got response")
+                | response.onComplete { 
+                |   case Success(x) =>
+                |     println(x)
+                |   case Failure(y) => 
+                |     println(y)
+                |}
               """)
   }
 
@@ -82,7 +86,7 @@ class ClientGenerator(request: Request) {
     addResponseCode()
     close()
     val content : String =  sb.stripMargin
-    val outFile: File = new File("./src/main/scala/scalawaw/Client.scala")
+    val outFile: File = new File("./runner/src/main/scala/scalawaw/Client.scala")
       outFile.delete()
     val pw : PrintWriter = new PrintWriter(outFile)
     pw.write(content)

@@ -7,6 +7,7 @@ import spray.httpx.SprayJsonSupport._
 import spray.client.pipelining._
 import scala.concurrent.Future
 import SpecJsonProtocol._
+import scala.util.{Success,Failure}
 object Client {
 def run {
 implicit val system = ActorSystem()
@@ -16,7 +17,12 @@ val pipeline: HttpRequest => Future[Response] = (
   ~> unmarshal[Response]
 )
 val response: Future[Response] = pipeline(Get("http://localhost:8080/hello"))
- println("Got response")
+ response.onComplete { 
+   case Success(x) =>
+     println(x)
+   case Failure(y) => 
+     println(y)
+}
               
 }
 }

@@ -35,8 +35,8 @@ object ServiceRenderer {
   }
 
   def render(spec: Spec) = {
-    val src = Source.fromFile("./src/main/resources/Service.template")
-    val out = new PrintWriter("./src/main/scala/scalawaw/Service.scala", "UTF-8")
+    val src = Source.fromFile("./renderer/src/main/resources/Service.template")
+    val out = new PrintWriter("./runner/src/main/scala/scalawaw/Service.scala", "UTF-8")
     val lines = src.getLines()
     val route = getRoute(spec)
     lines.map(_.replaceAll("ROUTE", renderRoute(route))).foreach {out.println(_)}
