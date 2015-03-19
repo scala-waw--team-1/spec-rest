@@ -19,7 +19,7 @@ object ServiceRenderer {
   def paren(str: String) = "(" + str + ")"
 
   def getRoute(spec: Spec): Route = {
-    val Spec(request, response) = spec
+    val Spec(request, response, variables) = spec
     val path = Path(request.urlPattern)
     val method = Get
     val body = Body(response.body)
